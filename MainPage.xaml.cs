@@ -1,5 +1,9 @@
 ﻿namespace FunkyAsyncAnimations;
 
+using System;
+using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
+
 public partial class MainPage : ContentPage
 {
     int count = 0;
@@ -9,15 +13,16 @@ public partial class MainPage : ContentPage
         InitializeComponent();
     }
 
-    private void OnCounterClicked(object sender, EventArgs e)
+    private async Task Animate()
     {
-        count++;
-
-        if (count == 1)
-            CounterBtn.Text = $"Clicked {count} time";
-        else
-            CounterBtn.Text = $"Clicked {count} times";
-
-        SemanticScreenReader.Announce(CounterBtn.Text);
+        var start = DateTime.Now;
+        await DotNetBotImage.RotateTo(45, 500);
+        await DotNetBotImage.RotateTo(0, 500);
+        var animationTime = DateTime.Now - start;
+        CounterBtn.Text = $"Animation lasted {animationTime.TotalMilliseconds} ms";
+    }
+    private void OnAnimatClicked(object sender, EventArgs e)
+    {
+        Animate();
     }
 }
